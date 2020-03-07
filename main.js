@@ -1,8 +1,8 @@
 import Vue from 'vue'
 import App from './App'
-
-Vue.config.productionTip = false
-
+import http from './utils/https.js'
+Vue.config.productionTip = false;
+Vue.prototype.request = http;
 App.mpType = 'app'
 
 const app = new Vue({

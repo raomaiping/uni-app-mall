@@ -22,11 +22,14 @@
 		},
 		methods: {
 			initData() {
-				uni.request({
+				this.request({
 					url: interfaces.getMallData, 
-					success: (res) => {
+					success: ((res) => {
 						console.log(res);
-					}
+						this.swiperList = res.data.swiperList;
+						this.categoryList = res.data.categoryList;
+						this.promotion = res.data.promotion;
+					})
 				});
 			}
 		}
