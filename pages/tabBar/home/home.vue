@@ -18,7 +18,38 @@
 				</view>
 			</view>
 		</view>
-
+		
+		<!-- 分类列表 -->
+		<view class="category-list">
+			<view @tap="handleCategory(item)" class="category" v-for="(item,index) in categoryList" :key="index">
+				<view class="img"><image :src="item.img"></image></view>
+				<view class="text">{{item.name}}</view>
+			</view>
+		</view>
+		
+		<!-- 广告图 -->
+		<view class="banner" v-if="promotion.length > 0">
+			<image src="/static/img/category/ad.jpg"></image>
+		</view>
+		
+		<!-- 活动区 -->
+		<view class="promotion" v-if="promotion.length > 0">
+			<view class="text">优惠活动</view>
+			<view class="list">
+				<view @tap="handlePromotion(item)" class="column" v-for="(item,index) in promotion" :key="index">
+					<view class="top">
+						<view class="title">{{item.title}}</view>
+					</view>
+					<view class="left">
+						<view class="ad">{{item.ad}}</view>
+						<view class="into">点击进入</view>
+					</view>
+					<view class="right">
+						<image :src="item.img"></image>
+					</view>
+				</view>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -55,6 +86,16 @@
 			swiperChange(event){
 				// console.log(event.detail.current)
 				this.currentSwiper = event.detail.current;
+			},
+			handleCategory(item){
+				//分类跳转
+				console.log(item.name)
+			},
+			handlePromotion(item){
+				uni.showToast({
+					title:item.title,
+					icon:"none"
+				})
 			}
 		}
 	}
