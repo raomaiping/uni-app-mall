@@ -33,6 +33,11 @@
 </script>
 
 <style lang="scss">
+	@import url("../static/iconfont/iconfont.css");
+	page{
+		position: relative;;
+		background-color: #FFFFFF;
+	}
 	.header {
 		width: 92%;
 		padding: 0 4%;

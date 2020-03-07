@@ -57,7 +57,6 @@
 </template>
 
 <script>
-	import pageHeader from "./pageHeader.vue"
 	import interfaces from "../../../utils/interfaces.js"
 	export default {
 		data() {
@@ -67,9 +66,6 @@
 				promotion: [], //活动
 				currentSwiper: 0
 			}
-		},
-		components: {
-			pageHeader
 		},
 		onLoad() {
 			this.initData();

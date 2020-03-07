@@ -2,11 +2,13 @@ import Vue from 'vue'
 import App from './App'
 import http from './utils/https.js'
 import status from './components/status.vue'
+import pageHeader from './components/pageHeader.vue'
 Vue.config.productionTip = false;
 Vue.prototype.request = http;
 
 //全局注册组件
 Vue.component('page-status',status);
+Vue.component('pageHeader',pageHeader);
 
 
 App.mpType = 'app'
