@@ -34,7 +34,7 @@ module.exports = (param) =>{
 			}
 			typeof param.success == "function" && param.success(res.data);
 		},
-		fail:(e) => {
+		fall:(e) => {
 			uni.showModal({
 				content:e.meg
 			})
