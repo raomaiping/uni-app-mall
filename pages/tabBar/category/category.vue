@@ -63,7 +63,10 @@
 				this.showCategoryIndex = index;
 			},
 			handleCategoryList(item){
-				console.log(item.name)
+				// console.log(item.name)
+				uni.navigateTo({
+					url:"../../goods/goodsList?name=" + item.name
+				})
 			}
 		}
 	}

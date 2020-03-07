@@ -88,7 +88,10 @@
 			},
 			handleCategory(item){
 				//分类跳转
-				console.log(item.name)
+				// console.log(item.name)
+				uni.navigateTo({
+					url:"../../goods/goodsList?name=" + item.name
+				})
 			},
 			handlePromotion(item){
 				uni.showToast({
