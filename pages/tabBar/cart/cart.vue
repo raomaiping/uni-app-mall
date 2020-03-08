@@ -3,8 +3,17 @@
 	<view class="goods-list">
 		<view class="empty" v-if="goodsList.length == 0">购物车空空如也~</view>
 		<view class="row" v-for="(item,index) in goodsList" :key="index">
+			
+			<!-- 删除按钮 -->
+			<view class="menu" @tap="handleSingleDelete(item)">
+				<view class="icon iconfont">&#xe6a6;</view>
+			</view>
 			<!-- 商品 -->
-			<view class="production">
+			<view class="production" 
+			@touchstart="handleTouchStart(index,$event)" 
+			@touchmove="handleTouchMove(index,$event)"
+			@touchend="handleTouchEnd(index,$event)"
+			:class="[theIndex == index ? 'open' : oldIndex == index ? 'close' : '']">
 				<!-- checkbox -->
 				<view class="container" @tap="handleCheckbox(item)">
 					<view class="checkbox">
@@ -40,6 +49,8 @@
 		},
 		data(){
 			return {
+				theIndex:null, // 控制滑动效果 当前滑动下标
+				oldIndex:null, //上一个左滑下标
 				goodsList:[]
 			}
 		},
@@ -64,6 +75,47 @@
 				uni.navigateTo({
 					url:"../../goods/goods?goodsInfo=" + JSON.stringify(item)
 				})
+			},
+			handleTouchStart(index,event){
+				// console.log("start",event);
+				//多点触控不触发
+				if(event.touches.length > 1){
+					return;
+				}
+				this.oldIndex = this.theIndex;
+				this.theIndex = null;
+				//初始化坐标
+				this.initXY = [event.touches[0].pageX,event.touches[0].pageY];
+			},
+			handleTouchMove(index,event){
+				// console.log("move");
+				
+				//多点触控不触发
+				if(event.touches.length > 1){
+					return;
+				}
+				
+				//移动位置
+				let moveX = event.touches[0].pageX - this.initXY[0];
+				let moveY = event.touches[0].pageY - this.initXY[1];
+				
+				//滑动位置小 不触发
+				if(Math.abs(moveX) < 5){
+					return;
+				}
+				
+				//竖向滑动不触发
+				if(Math.abs(moveY) > Math.abs(moveX)){
+					return;
+				}
+				
+				//左滑
+				if(moveX < 0){
+					this.theIndex = index
+				}
+			},
+			handleTouchEnd(index,event){
+				console.log("end");
 			}
 		}
 	}
