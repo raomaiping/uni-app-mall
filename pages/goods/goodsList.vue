@@ -77,15 +77,45 @@
 						this.filterByList[i].selected = false;
 					}
 				}
+				
+				//数据请求
+				this.filterby = this.filterByList[index].filterby;
+				this.page = 1;
+				this.loadingText = "加载中...";
+				this.goodsList = [];
+				this.loadData();
 			},
 			loadData(){
 				this.request({
 					url:`${interfaces.getGoodsList}/${this.filterby}/${this.page}/${this.size}`,	
 					success:((res) =>{
-						this.goodsList = res.data;
-						console.log(this.goodsList)
+						// this.goodsList = res.data;
+						// console.log(this.goodsList)
+						if(res.data.length > 0){
+							res.data.forEach(item =>{
+								this.goodsList.push(item);
+							})
+						}else{
+							this.loadingText = "别拉了,到底了";
+						}
 					})
 				})
+			},
+			//下拉刷新
+			onPullDownRefresh(){
+				setTimeout(() =>{
+					this.page = 1;
+					this.loadingText = "加载中...";
+					this.goodsList = [];
+					this.loadData();
+					uni.stopPullDownRefresh();
+				},1000)
+			},
+			//上拉加载
+			onReachBottom(){
+				this.page++;
+				this.loadData();
+				console.log(1)
 			}
 		}
 	}
