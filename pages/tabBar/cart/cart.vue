@@ -2,11 +2,42 @@
 	<!-- 购物列表 -->
 	<view class="goods-list">
 		<view class="empty" v-if="goodsList.length == 0">购物车空空如也~</view>
+		<view class="row" v-for="(item,index) in goodsList" :key="index">
+			<!-- 商品 -->
+			<view class="production">
+				<!-- checkbox -->
+				<view class="container" @tap="handleCheckbox(item)">
+					<view class="checkbox">
+						<view :class="{'on':item.selected}"></view>
+					</view>
+				</view>
+				
+				<!-- 商品详情 -->
+				<view class="goods-info" @tap="handleGoodsInfo(item)">
+					<view class="img">
+						<image :src="item.img"></image>
+					</view>
+					<view class="info">
+						<view class="title">{{item.name}}</view>
+						<view class="spec">{{item.spec}}</view>
+						<view class="price-number">
+							￥{{item.price}}
+							<counter :goodsInfo="item" />
+						</view>
+						</view>
+					</view>
+				</view>
+			</view>
+		</view>
 	</view>
 </template>
 
 <script>
+	import counter from "../../../components/counter.vue"
 	export default{
+		components:{
+			counter
+		},
 		data(){
 			return {
 				goodsList:[]
@@ -24,6 +55,16 @@
 					// console.log(this.goodsList);
 				})
 			})
+		},
+		methods:{
+			handleCheckbox(item){
+				item.selected = !item.selected;
+			},
+			handleGoodsInfo(item){
+				uni.navigateTo({
+					url:"../../goods/goods?goodsInfo=" + JSON.stringify(item)
+				})
+			}
 		}
 	}
 </script>
