@@ -1633,7 +1633,15 @@ var render = function() {
         [
           _c(
             "v-uni-view",
-            { staticClass: _vm._$g(19, "sc"), attrs: { _i: 19 } },
+            {
+              staticClass: _vm._$g(19, "sc"),
+              attrs: { _i: 19 },
+              on: {
+                click: function($event) {
+                  return _vm.$handleViewEvent($event)
+                }
+              }
+            },
             [
               _c(
                 "v-uni-view",
@@ -1649,11 +1657,13 @@ var render = function() {
             ],
             1
           ),
-          _c(
-            "v-uni-view",
-            { staticClass: _vm._$g(22, "sc"), attrs: { _i: 22 } },
-            [_vm._v("删除")]
-          ),
+          _vm._$g(22, "i")
+            ? _c(
+                "v-uni-view",
+                { staticClass: _vm._$g(22, "sc"), attrs: { _i: 22 } },
+                [_vm._v("删除")]
+              )
+            : _vm._e(),
           _c(
             "v-uni-view",
             { staticClass: _vm._$g(23, "sc"), attrs: { _i: 23 } },
@@ -1666,7 +1676,7 @@ var render = function() {
                   _c(
                     "v-uni-view",
                     { staticClass: _vm._$g(25, "sc"), attrs: { _i: 25 } },
-                    [_vm._v("￥5363")]
+                    [_vm._v(_vm._$g(25, "t0"))]
                   )
                 ],
                 1
@@ -1674,7 +1684,7 @@ var render = function() {
               _c(
                 "v-uni-view",
                 { staticClass: _vm._$g(26, "sc"), attrs: { _i: 26 } },
-                [_vm._v("结算")]
+                [_vm._v("结算   " + _vm._$g(26, "t0"))]
               )
             ],
             1

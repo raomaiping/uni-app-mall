@@ -39,19 +39,19 @@
 		<!-- 底部菜单 -->
 		<view class="footer" :style="{bottom:footerbottom}">
 			<!-- checkbox -->
-			<view class="container">
+			<view class="container" @tap="handleSelectedAll">
 				<view class="checkbox">
-					<view :class="{'on':true}"></view>
+					<view :class="{'on':isAllSelseced}"></view>
 				</view>
 			</view>
 
-			<view class="delBtn">删除</view>
+			<view class="delBtn" v-if="selectedList.length > 0">删除</view>
 			<view class="settlement">
 				<view class="sum">
 					合计:
-					<view class="money">￥5363</view>
+					<view class="money">{{sumPrice}}</view>
 				</view>
-				<view class="btn">结算</view>
+				<view class="btn">结算 &nbsp; {{selectedList.length}}</view>
 			</view>
 
 		</view>
@@ -66,10 +66,13 @@
 		},
 		data() {
 			return {
+				sumPrice:0.00,
 				footerbottom:0,
 				theIndex: null, // 控制滑动效果 当前滑动下标
 				oldIndex: null, //上一个左滑下标
-				goodsList: []
+				goodsList: [],
+				selectedList:[],
+				isAllSelseced:false
 			}
 		},
 		onShow() {
@@ -93,9 +96,32 @@
 		},
 		methods: {
 			handleCheckbox(item) {
+				//单选
 				item.selected = !item.selected;
+				
+				//条件：数组里是否包含该元素
+				let isExist = this.selectedList.indexOf(item);
+			
+				if(isExist > -1){
+					//有 删掉
+					this.selectedList.splice(isExist,1)
+				}else{
+					//没有 push 数组里
+					this.selectedList.push(item)
+				}
+				
+				//全选状态
+				if(this.selectedList.length == this.goodsList.length){
+					this.isAllSelseced = true;
+				}else{
+					this.isAllSelseced = false
+				}
+				
+				//合计
+				this.sum();
 			},
 			handleGoodsInfo(item) {
+				this.isAllSelseced = false;
 				uni.navigateTo({
 					url: "../../goods/goods?goodsInfo=" + JSON.stringify(item)
 				})
@@ -140,6 +166,29 @@
 			},
 			handleTouchEnd(index, event) {
 				console.log("end");
+			},
+			handleSelectedAll(){
+				//全选
+				this.isAllSelseced = !this.isAllSelseced;
+				
+				//数据处理
+				let arr = [];
+				this.goodsList.forEach((item,index) =>{
+					item.selected = this.isAllSelseced;
+					arr.push(item);
+				})
+				
+			    this.selectedList =	this.isAllSelseced ? arr : [];
+			},
+			sum(){
+				//合计
+				this.sumPrice = 0;
+				this.goodsList.forEach((item,index) =>{
+					if(item.selected){
+						this.sumPrice = this.sumPrice + (item.number * item.price)
+					}
+				})
+				this.sumPrice = this.sumPrice.toFixed(2)
 			}
 		}
 	}
