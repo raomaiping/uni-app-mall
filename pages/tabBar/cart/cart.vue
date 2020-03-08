@@ -1,65 +1,83 @@
 <template>
-	<!-- 购物列表 -->
-	<view class="goods-list">
-		<view class="empty" v-if="goodsList.length == 0">购物车空空如也~</view>
-		<view class="row" v-for="(item,index) in goodsList" :key="index">
-			
-			<!-- 删除按钮 -->
-			<view class="menu" @tap="handleSingleDelete(item)">
-				<view class="icon iconfont">&#xe6a6;</view>
-			</view>
-			<!-- 商品 -->
-			<view class="production" 
-			@touchstart="handleTouchStart(index,$event)" 
-			@touchmove="handleTouchMove(index,$event)"
-			@touchend="handleTouchEnd(index,$event)"
-			:class="[theIndex == index ? 'open' : oldIndex == index ? 'close' : '']">
-				<!-- checkbox -->
-				<view class="container" @tap="handleCheckbox(item)">
-					<view class="checkbox">
-						<view :class="{'on':item.selected}"></view>
-					</view>
+	<view>
+		<!-- 购物列表 -->
+		<view class="goods-list">
+			<view class="empty" v-if="goodsList.length == 0">购物车空空如也~</view>
+			<view class="row" v-for="(item,index) in goodsList" :key="index">
+
+				<!-- 删除按钮 -->
+				<view class="menu" @tap="handleSingleDelete(item)">
+					<view class="icon iconfont">&#xe6a6;</view>
 				</view>
-				
-				<!-- 商品详情 -->
-				<view class="goods-info" @tap="handleGoodsInfo(item)">
-					<view class="img">
-						<image :src="item.img"></image>
-					</view>
-					<view class="info">
-						<view class="title">{{item.name}}</view>
-						<view class="spec">{{item.spec}}</view>
-						<view class="price-number">
-							￥{{item.price}}
-							<counter :goodsInfo="item" />
+				<!-- 商品 -->
+				<view class="production" @touchstart="handleTouchStart(index,$event)" @touchmove="handleTouchMove(index,$event)"
+				 @touchend="handleTouchEnd(index,$event)" :class="[theIndex == index ? 'open' : oldIndex == index ? 'close' : '']">
+					<!-- checkbox -->
+					<view class="container" @tap="handleCheckbox(item)">
+						<view class="checkbox">
+							<view :class="{'on':item.selected}"></view>
 						</view>
+					</view>
+
+					<!-- 商品详情 -->
+					<view class="goods-info" @tap="handleGoodsInfo(item)">
+						<view class="img">
+							<image :src="item.img"></image>
+						</view>
+						<view class="info">
+							<view class="title">{{item.name}}</view>
+							<view class="spec">{{item.spec}}</view>
+							<view class="price-number">
+								￥{{item.price}}
+								<counter :goodsInfo="item" />
+							</view>
 						</view>
 					</view>
 				</view>
 			</view>
+		</view>
+		<!-- 底部菜单 -->
+		<view class="footer" :style="{bottom:footerbottom}">
+			<!-- checkbox -->
+			<view class="container">
+				<view class="checkbox">
+					<view :class="{'on':true}"></view>
+				</view>
+			</view>
+
+			<view class="delBtn">删除</view>
+			<view class="settlement">
+				<view class="sum">
+					合计:
+					<view class="money">￥5363</view>
+				</view>
+				<view class="btn">结算</view>
+			</view>
+
 		</view>
 	</view>
 </template>
 
 <script>
 	import counter from "../../../components/counter.vue"
-	export default{
-		components:{
+	export default {
+		components: {
 			counter
 		},
-		data(){
+		data() {
 			return {
-				theIndex:null, // 控制滑动效果 当前滑动下标
-				oldIndex:null, //上一个左滑下标
-				goodsList:[]
+				footerbottom:0,
+				theIndex: null, // 控制滑动效果 当前滑动下标
+				oldIndex: null, //上一个左滑下标
+				goodsList: []
 			}
 		},
 		onShow() {
 			uni.getStorage({
-				key:"goodsList",
-				success:(res =>{
+				key: "goodsList",
+				success: (res => {
 					//将所有商品的选中状态设置为false
-					for(let i = 0; i < res.data.length; i++){
+					for (let i = 0; i < res.data.length; i++) {
 						res.data[i].selected = false;
 					}
 					this.goodsList = res.data;
@@ -67,54 +85,60 @@
 				})
 			})
 		},
-		methods:{
-			handleCheckbox(item){
+		onLoad(){
+			//兼容h5下的底部菜单
+			//#ifdef H5
+			this.footerbottom = document.getElementsByTagName("uni-tabbar")[0].offsetHeight + "px";
+			//#endif
+		},
+		methods: {
+			handleCheckbox(item) {
 				item.selected = !item.selected;
 			},
-			handleGoodsInfo(item){
+			handleGoodsInfo(item) {
 				uni.navigateTo({
-					url:"../../goods/goods?goodsInfo=" + JSON.stringify(item)
+					url: "../../goods/goods?goodsInfo=" + JSON.stringify(item)
 				})
 			},
-			handleTouchStart(index,event){
+			handleTouchStart(index, event) {
 				// console.log("start",event);
 				//多点触控不触发
-				if(event.touches.length > 1){
+				if (event.touches.length > 1) {
 					return;
 				}
 				this.oldIndex = this.theIndex;
 				this.theIndex = null;
 				//初始化坐标
-				this.initXY = [event.touches[0].pageX,event.touches[0].pageY];
+				this.initXY = [event.touches[0].pageX, event.touches[0].pageY];
 			},
-			handleTouchMove(index,event){
+			handleTouchMove(index, event) {
 				// console.log("move");
-				
+
 				//多点触控不触发
-				if(event.touches.length > 1){
+				if (event.touches.length > 1) {
 					return;
 				}
-				
+
 				//移动位置
 				let moveX = event.touches[0].pageX - this.initXY[0];
 				let moveY = event.touches[0].pageY - this.initXY[1];
-				
+
 				//滑动位置小 不触发
-				if(Math.abs(moveX) < 5){
+				if (Math.abs(moveX) < 5) {
 					return;
 				}
-				
+
 				//竖向滑动不触发
-				if(Math.abs(moveY) > Math.abs(moveX)){
+				if (Math.abs(moveY) > Math.abs(moveX)) {
 					return;
 				}
-				
+
 				//左滑
-				if(moveX < 0){
+				if (moveX < 0) {
 					this.theIndex = index
 				}
 			},
-			handleTouchEnd(index,event){
+			handleTouchEnd(index, event) {
 				console.log("end");
 			}
 		}
