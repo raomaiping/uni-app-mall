@@ -91,7 +91,7 @@
 				</view>
 			</view>
 			<view class="btn">
-				<view class="joinCart">加入购物车</view>
+				<view class="joinCart" @tap="joinCart">加入购物车</view>
 				<view class="buy">立即购买</view>
 			</view>
 		</view>
@@ -167,6 +167,63 @@
 						title:"已收藏"
 					})
 				}
+			},
+			joinCart(){
+				// console.log(this.goodsInfo)
+				
+				//存储到本地存储里
+				
+				//1.先去本地存储中取
+				uni.getStorage({
+					key:"goodsList",
+					success:(res =>{
+						// 拿数据
+						let goodsList = res.data;
+						// console.log("加入成功");
+						// console.log(res.data);
+						
+						//查找商品是否存在
+						let isExist = false;
+						
+						goodsList.forEach(goods =>{
+							if(goods.goods_id == this.goodsInfo.goods_id && goods.spec == this.goodsInfo.spec){
+								//如果存在  修改商品数量
+								console.log(11)
+								goods.number += Number(this.goodsInfo.number);
+								this.setGoodsList(goodsList);
+								isExist = true;
+							}
+						})
+						
+						if(!isExist){
+							goodsList.push(this.goodsInfo);
+							//更新本地存储
+							this.setGoodsList(goodsList);
+						}
+						
+					}) ,
+					fail:(err => {
+						// console.log("加入失败")
+						//没有得到数据，那么就存
+						let goodsList = [];
+						goodsList.push(this.goodsInfo);
+						this.setGoodsList(goodsList);
+					})
+				})
+			},
+			setGoodsList(goodsList){
+				// console.log("存储到本地存储中");
+				//存储到本地存储中
+				uni.setStorage({
+					key:"goodsList",
+					data:goodsList,
+					success:function(){
+						uni.showToast({
+							icon:"success",
+							title:"添加购物车成功"
+						})
+					}
+				})
 			}
 		}
 	}
