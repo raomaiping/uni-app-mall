@@ -45,7 +45,7 @@
 				</view>
 			</view>
 
-			<view class="delBtn" v-if="selectedList.length > 0">删除</view>
+			<view class="delBtn" v-if="selectedList.length > 0" @tap="handleMulDelete">删除</view>
 			<view class="settlement">
 				<view class="sum">
 					合计:
@@ -130,6 +130,18 @@
 					url: "../../goods/goods?goodsInfo=" + JSON.stringify(item)
 				})
 			},
+			handleMulDelete(){
+				//循环删除选中的商品
+				
+				while(this.selectedList.length > 0){
+					this.handleSingleDelete(this.selectedList[0]);
+				}
+				
+				//初始化数据
+				this.selectedList = [];
+				this.isAllSelseced = false;
+				this.sum();
+			},
 			handleTouchStart(index, event) {
 				// console.log("start",event);
 				//多点触控不触发
@@ -185,6 +197,24 @@
 			    this.selectedList =	this.isAllSelseced ? arr : [];
 				
 				// 合计
+				this.sum();
+			},
+			handleSingleDelete(item){
+				//更新storage
+				uni.getStorage({
+					key:"goodsList",
+					success:(res) =>{
+						res.data.splice(res.data.indexOf(item),1);
+						uni.setStorageSync("goodsList",res.data);
+					}
+				})
+				
+				//更新数组
+				this.goodsList.splice(this.goodsList.indexOf(item),1);
+				this.selectedList.splice(this.selectedList.indexOf(item),1);
+				
+				this.oldIndex = null;
+				this.theIndex = null;
 				this.sum();
 			},
 			sum(){
