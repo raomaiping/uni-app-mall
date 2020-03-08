@@ -1,15 +1,45 @@
 <template>
-	<view class="header">
-		<view @tap="handleSelect(index)" class="target" v-for="(target,index) in filterByList" :key="index" :class="{'on':target.selected}">
-			{{target.text}}
+	<view>
+		<view class="header">
+			<view @tap="handleSelect(index)" class="target" v-for="(target,index) in filterByList" :key="index" :class="{'on':target.selected}">
+				{{target.text}}
+			</view>
+		</view>
+		<!-- 占位 tabbar 有定位 -->
+		<view class="place"></view>
+		
+		<!-- 商品列表 -->
+		<view class="goods-list">
+			<view class="product-list">
+				<view class="product" v-for="goods in goodsList" :key="goods.goods_id">
+					<image :src="goods.img" mode="widthFix"></image>
+					<view class="name">
+						{{goods.name}}
+					</view>
+					<view class="info">
+						<view class="price">
+							<text>￥</text>
+							{{goods.price}}
+						</view>
+						<view class="slogan">{{goods.slogan}}<text>人付款</text></view>
+					</view>
+				</view>
+			</view>
+			<view class="loading-text">{{loadingText}}</view>
 		</view>
 	</view>
 </template>
 
 <script>
+	import interfaces from '../../utils/interfaces.js'
 	export default {
 		data() {
 			return {
+				goodsList:[],//商品列表
+				filterby:"all",//默认选中的tab
+				page:1,
+				size:6,
+				loadingText:"正在加载...",
 				filterByList: [{
 						text: '全部',
 						selected: true,
@@ -34,6 +64,9 @@
 			uni.setNavigationBarTitle({
 				title: option.name
 			})
+			
+			//加载数据
+			this.loadData();
 		},
 		methods:{
 			handleSelect(index){
@@ -44,6 +77,15 @@
 						this.filterByList[i].selected = false;
 					}
 				}
+			},
+			loadData(){
+				this.request({
+					url:`${interfaces.getGoodsList}/${this.filterby}/${this.page}/${this.size}`,	
+					success:((res) =>{
+						this.goodsList = res.data;
+						console.log(this.goodsList)
+					})
+				})
 			}
 		}
 	}
