@@ -1,12 +1,55 @@
 <template>
 	<view>
 		<view class="content">
+			<!-- 好中差评 -->
 			<view class="label">
 				<view @tap="loadRatings(index)" :class="{'on': index == labelIndex}" v-for="(item,index) in labelList" :key="index">
 					{{item.name}}({{item.number}})
 				</view>
 			</view>
+
+			<!-- 评论信息 -->
+			<view class="list">
+				<view v-for="(item,index) in ratingList" :key="index" class="ratings">
+					<view class="left">
+						<view class="face">
+							<image :src="item.face"></image>
+						</view>
+					</view>
+					<view class="right">
+						<!-- username & date -->
+						<view class="name-date">
+							<view class="username">{{item.username}}</view>
+							<view class="date">{{item.date}}</view>
+						</view>
+
+						<!-- specifications -->
+						<view class="spec">
+							{{item.spec}}
+						</view>
+
+						<!-- medias -->
+						<view class="medias">
+							<view class="content">{{item.content}}</view>
+							<view class="img-video">
+								<view class="box" v-for="video in item.video" :key="video.path">
+									<image :src="video.img" mode="aspectFill"></image>
+									<view class="playbtn">
+										<view class="icon iconfont">&#xe7e9;</view>
+									</view>
+								</view>
+								<!-- 图片 -->
+								<view @tap="showBigImg(image,item.img)" class="box" v-for="(image,index) in item.img" :key="index">
+									<image :src="image" mode="aspectFill"></image>
+								</view>
+							</view>
+						</view>
+					</view>
+				</view>
+			</view>
 		</view>
+
+
 	</view>
 </template>
 
@@ -14,7 +57,7 @@
 	export default {
 		data() {
 			return {
-				labelIndex:0,//当前评论的下标
+				labelIndex: 0, //当前评论的下标
 				ratingList: [],
 				labelList: [{
 						name: '全部',
@@ -60,21 +103,27 @@
 				const comments = uni.getStorageSync("comments")
 				if (comments) {
 					this.ratingList = comments;
+					console.log(this.ratingList);
 				}
-			} catch{
+			} catch {
 				console.log(err)
 			}
 		},
-		methods:{
-			loadRatings(index){
+		methods: {
+			loadRatings(index) {
 				this.labelIndex = index;
+			},
+			showBigImg(src,images){
+				uni.previewImage({
+					current:src,
+					urls:images
+				})
 			}
 		}
 	}
 </script>
 
 <style lang="scss">
-	
 	.content {
 		view {
 			display: flex;
@@ -199,8 +248,8 @@
 			}
 		}
 	}
-	
-	.myVideo{
+
+	.myVideo {
 		position: fixed;
 		top: 50%;
 		right: 100%;
@@ -212,5 +261,4 @@
 		height: 100%;
 		// #endif
 	}
-	
 </style>
