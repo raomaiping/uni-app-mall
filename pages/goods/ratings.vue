@@ -1,5 +1,6 @@
 <template>
 	<view>
+		<video class="myVideo" id="myVideo" @fullscreenchange="videoContol" :src="videoSrc" v-show="showVideo"></video>
 		<view class="content">
 			<!-- 好中差评 -->
 			<view class="label">
@@ -32,7 +33,7 @@
 						<view class="medias">
 							<view class="content">{{item.content}}</view>
 							<view class="img-video">
-								<view class="box" v-for="video in item.video" :key="video.path">
+								<view @tap="playVideo(video.path)" class="box" v-for="video in item.video" :key="video.path">
 									<image :src="video.img" mode="aspectFill"></image>
 									<view class="playbtn">
 										<view class="icon iconfont">&#xe7e9;</view>
@@ -57,6 +58,9 @@
 	export default {
 		data() {
 			return {
+				showVideo:true,
+				videoSrc:"",
+				videoContext:"",
 				labelIndex: 0, //当前评论的下标
 				ratingList: [],
 				labelList: [{
@@ -99,6 +103,9 @@
 			}
 		},
 		onLoad() {
+			// #ifdef MP
+			this.showVideo = false;
+			// #endif
 			try {
 				const comments = uni.getStorageSync("comments")
 				if (comments) {
@@ -118,7 +125,41 @@
 					current:src,
 					urls:images
 				})
+			},
+			playVideo(path){
+				console.log(path);
+				this.videoSrc = path;
+				
+				//全屏播放
+				this.$nextTick(() =>{
+					this.videoContext.requestFullScreen({
+						direction:0
+					})
+				})
+				
+				// #ifdef MP
+				this.showVideo = false;
+				// #endif
+			},
+			videoContol(e){
+				if(e.detail.fullScreen){ //全屏
+					//自动播放
+					this.videoContext.play();
+				}else{
+					//停止播放
+					// this.videoContext.pause()
+					this.videoPause();
+				}
+			},
+			videoPause(){
+				this.videoSrc = "";
+				// #ifdef MP
+				this.showVideo = false;
+				// #endif
 			}
+		},
+		onReady(){
+			this.videoContext = uni.createVideoContext("myVideo");
 		}
 	}
 </script>
