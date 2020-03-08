@@ -1,36 +1,49 @@
 <template>
-	<view  class="popup spec" v-show="spaceInfo.showSpace">
+	<view  class="popup spec" v-show="spaceInfo.showSpace" @tap.stop="hideSpecifications">
 		<!-- 遮罩层 -->
 		<view class="mask"></view>
 		<view class="layer">
 			<view class="content">
 				<view class="title">选择规格:</view>
 				<view class="sp">
-					<view :class="{'on':item == goodsInfo.spec}" v-for="(item,index) in goodsData.spec" :key="index">
+					<view @tap.stop="handleSelectSpecification(item)" :class="{'on':item == goodsInfo.spec}" v-for="(item,index) in goodsData.spec" :key="index">
 						{{item}}
 					</view>
 				</view>
 				<view class="length">
-					<view class="text">
-						数量
-					</view>
+					<view class="text">数量</view>
+					<!-- counter组件 -->
+					<counter :goodsInfo="goodsInfo"/>
 				</view>
 
 			</view>
 			<!-- 确定按钮 -->
 			<view class="btn">
-				<view class="button">确定</view>
+				<view class="button" @tap.stop="hideSpecifications">确定</view>
 			</view>
 		</view>
 	</view>
 </template>
 
 <script>
+	import counter from './counter.vue'
 	export default {
+		components:{
+			counter
+		},
 		props: {
 			spaceInfo: Object,
 			goodsInfo: Object,
 			goodsData: Object
+		},
+		methods:{
+			hideSpecifications(){
+				this.spaceInfo.showSpace = false;
+			},
+			handleSelectSpecification(item){
+				//选择规格
+				this.goodsInfo.spec = item;
+			}
 		}
 	}
 </script>

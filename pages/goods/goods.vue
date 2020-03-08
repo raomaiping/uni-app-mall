@@ -25,7 +25,7 @@
 
 		<!-- 选择规格 -->
 		<view class="info-box">
-			<view class="row" @tap="spaceInfo.showSpace = true">
+			<view class="row" @tap.stop="spaceInfo.showSpace = true">
 				<view class="text">选择</view>
 				<view class="content">
 					<view>选择规格:</view>
