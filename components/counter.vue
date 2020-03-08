@@ -20,9 +20,14 @@
 					return;
 				}
 				this.goodsInfo.number--;
+				
+				//注册change事件
+				this.$emit("change");
 			},
 			add(){
 				this.goodsInfo.number++;
+				//注册change事件
+				this.$emit("change");
 			}
 		},
 		props: {

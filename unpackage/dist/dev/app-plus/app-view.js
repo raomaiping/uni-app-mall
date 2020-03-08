@@ -1603,7 +1603,14 @@ var render = function() {
                               },
                               [
                                 _vm._v("￥" + _vm._$g("16-" + $30, "t0")),
-                                _c("counter", { attrs: { _i: "17-" + $30 } })
+                                _c("counter", {
+                                  attrs: { _i: "17-" + $30 },
+                                  on: {
+                                    change: function($event) {
+                                      return _vm.$handleViewEvent($event)
+                                    }
+                                  }
+                                })
                               ],
                               1
                             )

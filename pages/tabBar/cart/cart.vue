@@ -29,7 +29,7 @@
 							<view class="spec">{{item.spec}}</view>
 							<view class="price-number">
 								￥{{item.price}}
-								<counter :goodsInfo="item" />
+								<counter :goodsInfo="item" @change="sum"/>
 							</view>
 						</view>
 					</view>
@@ -85,6 +85,11 @@
 					}
 					this.goodsList = res.data;
 					// console.log(this.goodsList);
+					
+					//属性初始化
+					this.selectedList = [];
+					this.isAllSelseced = false;
+					this.sumPrice = '0.00'
 				})
 			})
 		},
@@ -121,7 +126,6 @@
 				this.sum();
 			},
 			handleGoodsInfo(item) {
-				this.isAllSelseced = false;
 				uni.navigateTo({
 					url: "../../goods/goods?goodsInfo=" + JSON.stringify(item)
 				})
@@ -179,6 +183,9 @@
 				})
 				
 			    this.selectedList =	this.isAllSelseced ? arr : [];
+				
+				// 合计
+				this.sum();
 			},
 			sum(){
 				//合计
