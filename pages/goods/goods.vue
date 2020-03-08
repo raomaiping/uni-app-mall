@@ -16,21 +16,45 @@
 				{{currentSwiper + 1}}/{{goodsData.swiperList.length}}
 			</view>
 		</view>
-		
+
 		<!-- 标题和价格 -->
 		<view class="info-box goods-info">
 			<view class="price">￥{{goodsInfo.price}}</view>
 			<view class="title">{{goodsInfo.name}}</view>
 		</view>
+
+		<!-- 选择规格 -->
+		<view class="info-box">
+			<view class="row" @tap="spaceInfo.showSpace = true">
+				<view class="text">选择</view>
+				<view class="content">
+					<view>选择规格:</view>
+					<view class="sp">
+						<view :class="{'on':item == goodsInfo.spec}" v-for="(item,index) in goodsData.spec" :key="index">
+							{{item}}
+						</view>
+					</view>
+				</view>
+				<!-- 箭头 -->
+				<view class="arrow">
+					<view class="icon iconfont">&#xe6a3;</view>
+				</view>
+			</view>
+		</view>
+		
+		<!-- 模态框 -->
+		<popupSpec :spaceInfo ="spaceInfo" :goodsInfo="goodsInfo" :goodsData="goodsData"/>
 	</view>
 </template>
 
 <script>
 	import interfaces from '../../utils/interfaces.js'
 	import goodsHeader from "./goodsHeader.vue"
+	import popupSpec from '../../components/popupSpec.vue'
 	export default {
 		components: {
-			goodsHeader
+			goodsHeader,
+			popupSpec
 		},
 		data() {
 			return {
@@ -46,7 +70,10 @@
 					number: 1,
 					spec: ""
 				},
-				currentSwiper: 0 //轮播图下标
+				currentSwiper: 0 ,//轮播图下标
+				spaceInfo:{
+					showSpace:false
+				}
 			}
 		},
 		onLoad(option) {
@@ -64,7 +91,7 @@
 					})
 				})
 			},
-			swiperChange(e){
+			swiperChange(e) {
 				// console.log(e.detail.current)
 				this.currentSwiper = e.detail.current;
 			}
