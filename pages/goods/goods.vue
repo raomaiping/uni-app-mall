@@ -44,6 +44,30 @@
 		
 		<!-- 模态框 -->
 		<popupSpec :spaceInfo ="spaceInfo" :goodsInfo="goodsInfo" :goodsData="goodsData"/>
+		
+		<!-- 评价 -->
+		<view class="info-box comments">
+			<view class="row">
+				<view class="text">商品评价({{goodsData.comment.length}})</view>
+				<view class="arrow" @tap="handleRatings">
+					<view class="show">
+						查看全部
+						<view class="icon iconfont">&#xe6a3;</view>
+					</view>
+				</view>
+			</view>
+			<view class="comment" @tap="handleRatings">
+				<view class="user-info">
+					<view class="face">
+						<image :src="goodsData.comment[0].face"></image>
+					</view>
+					<view class="username">{{goodsData.comment[0].username}}</view>
+				</view>
+				<view class="content">
+					{{goodsData.comment[0].content}}
+				</view>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -61,7 +85,7 @@
 				goodsData: {
 					swiperList: [],
 					spec: [],
-					comment: [],
+					comment: [{face:"",content:"",username:""}],
 					descriptionStr: ""
 				},
 				goodsInfo: {
@@ -94,6 +118,14 @@
 			swiperChange(e) {
 				// console.log(e.detail.current)
 				this.currentSwiper = e.detail.current;
+			},
+			handleRatings(){
+				//本地存储
+				uni.setStorageSync("comments",this.goodsData.comment);
+				//页面跳转
+				uni.navigateTo({
+					url:"./ratings"
+				})
 			}
 		}
 	}
