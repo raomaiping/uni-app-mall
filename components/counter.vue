@@ -16,18 +16,21 @@
 	export default {
 		methods:{
 			sub(){
-				if(this.goodsInfo.number <= 1){
-					return;
-				}
-				this.goodsInfo.number--;
+				// if(this.goodsInfo.number <= 1){
+				// 	return;
+				// }
+				// this.goodsInfo.number--;
 				
-				//注册change事件
-				this.$emit("change");
+				// //注册change事件
+				// this.$emit("change");
+				
+				this.$emit("sub");
 			},
 			add(){
-				this.goodsInfo.number++;
-				//注册change事件
-				this.$emit("change");
+				// this.goodsInfo.number++;
+				// //注册change事件
+				// this.$emit("change");
+				this.$emit("add");
 			}
 		},
 		props: {

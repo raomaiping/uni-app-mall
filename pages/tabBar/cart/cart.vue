@@ -29,7 +29,7 @@
 							<view class="spec">{{item.spec}}</view>
 							<view class="price-number">
 								￥{{item.price}}
-								<counter :goodsInfo="item" @change="sum"/>
+								<counter :goodsInfo="item" @add="add(item)" @sub="sub(item)"/>
 							</view>
 						</view>
 					</view>
@@ -100,6 +100,17 @@
 			//#endif
 		},
 		methods: {
+			add(item){
+				item.number++;
+				this.sum();
+			},
+			sub(item){
+				if(item.number <= 1){
+					return;
+				}
+				item.number--;
+				this.sum();
+			},
 			handleCheckbox(item) {
 				//单选
 				item.selected = !item.selected;

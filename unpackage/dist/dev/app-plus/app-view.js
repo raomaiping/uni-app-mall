@@ -1608,7 +1608,10 @@ var render = function() {
                                 _c("counter", {
                                   attrs: { _i: "17-" + $30 },
                                   on: {
-                                    change: function($event) {
+                                    add: function($event) {
+                                      return _vm.$handleViewEvent($event)
+                                    },
+                                    sub: function($event) {
                                       return _vm.$handleViewEvent($event)
                                     }
                                   }
@@ -2787,7 +2790,23 @@ var render = function() {
         ],
         1
       ),
-      _c("popupSpec", { attrs: { _i: 20 } }),
+      _c("popupSpec", {
+        attrs: { _i: 20 },
+        on: {
+          add: function($event) {
+            return _vm.$handleViewEvent($event)
+          },
+          sub: function($event) {
+            return _vm.$handleViewEvent($event)
+          },
+          setSelectSpec: function($event) {
+            return _vm.$handleViewEvent($event)
+          },
+          hideSpec: function($event) {
+            return _vm.$handleViewEvent($event)
+          }
+        }
+      }),
       _c(
         "v-uni-view",
         { staticClass: _vm._$g(21, "sc"), attrs: { _i: 21 } },
@@ -3422,7 +3441,17 @@ var render = function() {
                     { staticClass: _vm._$g(8, "sc"), attrs: { _i: 8 } },
                     [_vm._v("数量")]
                   ),
-                  _c("counter", { attrs: { _i: 9 } })
+                  _c("counter", {
+                    attrs: { _i: 9 },
+                    on: {
+                      sub: function($event) {
+                        return _vm.$handleViewEvent($event)
+                      },
+                      add: function($event) {
+                        return _vm.$handleViewEvent($event)
+                      }
+                    }
+                  })
                 ],
                 1
               )

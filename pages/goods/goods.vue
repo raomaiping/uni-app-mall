@@ -43,7 +43,7 @@
 		</view>
 
 		<!-- 模态框 -->
-		<popupSpec :spaceInfo="spaceInfo" :goodsInfo="goodsInfo" :goodsData="goodsData" />
+		<popupSpec @add="add" @sub="sub" @setSelectSpec="setSelectSpec" @hideSpec="hideSpec" :spaceInfo="spaceInfo" :goodsInfo="goodsInfo" :goodsData="goodsData" />
 
 		<!-- 评价 -->
 		<view class="info-box comments">
@@ -138,6 +138,23 @@
 
 		},
 		methods: {
+			add(){
+
+				this.goodsInfo.number++;
+			},
+			sub(){
+				if(this.goodsInfo.number <= 1){
+					return;
+				}
+				this.goodsInfo.number--;
+			},
+			setSelectSpec(item){
+				// console.log(item)
+				this.goodsInfo.spec = item;
+			},
+			hideSpec(){
+				this.spaceInfo.showSpace = false;
+			},
 			initData() {
 				this.request({
 					url: interfaces.getGoods,

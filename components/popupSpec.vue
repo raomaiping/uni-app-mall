@@ -13,7 +13,7 @@
 				<view class="length">
 					<view class="text">数量</view>
 					<!-- counter组件 -->
-					<counter :goodsInfo="goodsInfo"/>
+					<counter @sub="sub" @add="add" :goodsInfo="goodsInfo"/>
 				</view>
 
 			</view>
@@ -38,11 +38,22 @@
 		},
 		methods:{
 			hideSpecifications(){
-				this.spaceInfo.showSpace = false;
+				// this.spaceInfo.showSpace = false;
+				//子级注册事件 父级执行事件
+				this.$emit("hideSpec")
 			},
 			handleSelectSpecification(item){
 				//选择规格
-				this.goodsInfo.spec = item;
+				// this.goodsInfo.spec = item;
+				
+				//子级注册事件 父级执行事件
+				this.$emit("setSelectSpec",item)
+			},
+			sub(){
+				this.$emit("sub");
+			},
+			add(){
+				this.$emit("add");
 			}
 		}
 	}
