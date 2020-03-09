@@ -59,6 +59,12 @@
 			"style": {
 				"navigationBarTitleText": "商品评论"
 			}
+		},
+		{
+			"path": "pages/order/confirm",
+			"style": {
+				"navigationBarTitleText": "确认订单"
+			}
 		}
 	],
 	"globalStyle": {

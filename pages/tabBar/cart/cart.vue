@@ -51,7 +51,7 @@
 					合计:
 					<view class="money">{{sumPrice}}</view>
 				</view>
-				<view class="btn">结算 &nbsp; {{selectedList.length}}</view>
+				<view class="btn" @tap="handleConfirm">结算 &nbsp; {{selectedList.length}}</view>
 			</view>
 
 		</view>
@@ -216,6 +216,27 @@
 				this.oldIndex = null;
 				this.theIndex = null;
 				this.sum();
+			},
+			handleConfirm(){//结算
+				if(this.selectedList.length < 1){
+					uni.showToast({
+						title:"请选择结算的商品",
+						icon:"none"
+					})
+					return;
+				}
+				
+				//本地存储
+				uni.setStorage({
+					key:"confirmList",
+					data:this.selectedList,
+					success:() =>{
+						uni.navigateTo({
+							url:"../../order/confirm"
+						})
+					}
+				})
+				
 			},
 			sum(){
 				//合计

@@ -92,7 +92,7 @@
 			</view>
 			<view class="btn">
 				<view class="joinCart" @tap="joinCart">加入购物车</view>
-				<view class="buy">立即购买</view>
+				<view class="buy" @tap="handleBuy">立即购买</view>
 			</view>
 		</view>
 	</view>
@@ -150,6 +150,20 @@
 			swiperChange(e) {
 				// console.log(e.detail.current)
 				this.currentSwiper = e.detail.current;
+			},
+			handleBuy(){
+				let tempList = [];
+				tempList.push(this.goodsInfo);
+				uni.setStorage({
+					key:"confirmList",
+					data:tempList,
+					success:()=>{
+						uni.navigateTo({
+							url:"../order/confirm"
+						})
+					}
+					
+				})
 			},
 			handleRatings() {
 				//本地存储
