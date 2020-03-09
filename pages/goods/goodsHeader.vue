@@ -45,7 +45,6 @@
 <style lang="scss">
 	.header {
 		width: 100%;
-
 		height: 100upx;
 		display: flex;
 		align-items: center;
@@ -54,7 +53,7 @@
 		z-index: 10;
 		/*  #ifdef  APP-PLUS  */
 		top: var(--status-bar-height);
-
+		background-color: rgba(0,0,0,0);
 		/*  #endif  */
 		.before {
 			width: 92%;
@@ -66,6 +65,7 @@
 			top: 0;
 			/*  #ifdef  APP-PLUS  */
 			top: var(--status-bar-height);
+			padding: 0 ;
 			/*  #endif  */
 			transition: opacity 0.05s linear;
 

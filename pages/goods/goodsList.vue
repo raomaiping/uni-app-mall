@@ -6,7 +6,7 @@
 			</view>
 		</view>
 		<!-- 占位 tabbar 有定位 -->
-		<view class="place"></view>
+		<view class="place" ></view>
 		
 		<!-- 商品列表 -->
 		<view class="goods-list">
@@ -67,6 +67,7 @@
 			
 			//加载数据
 			this.loadData();
+			
 		},
 		methods:{
 			handleSelect(index){
@@ -136,6 +137,10 @@
 		justify-content: space-around;
 		align-items: flex-end;
 		position: fixed;
+		/*  #ifdef  APP-PLUS  */
+			top: 0;
+		/*  #endif  */
+	
 		z-index: 10;
 		background-color: #fff;
 		border-bottom: solid 1upx #eee;
@@ -166,6 +171,9 @@
 	.place {
 		background-color: #ffffff;
 		height: 100upx;
+		/*  #ifdef  APP-PLUS  */
+			height: 50upx;
+		/*  #endif  */
 	}
 
 	.goods-list {

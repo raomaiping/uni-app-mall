@@ -3,7 +3,7 @@
 		<!-- 状态栏 -->
 		<page-status></page-status>
 		<!-- header -->
-		<goodsHeader />
+		<goodsHeader/>
 
 		<!-- 轮播图 -->
 		<view class="swiper-box">
@@ -261,6 +261,7 @@
 </script>
 
 <style lang="scss">
+	
 	/*  修改状态栏样式 */
 	.status {
 		/* #ifdef APP-PLUS */
