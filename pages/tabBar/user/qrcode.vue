@@ -7,10 +7,60 @@
 		<view class="title">
 			扫描二维码，加我为好友
 		</view>
+		<view class="btn" v-show="showBtn" @tap="handleSavePhotos">
+			{{savePhotos}}
+		</view>
 	</view>
 </template>
 
 <script>
+	export default {
+		data() {
+			return {
+				savePhotos: "保存到相册",
+				showBtn: false
+			}
+		},
+		onLoad() {
+			// #ifdef APP-PLUS
+			this.showBtn = true;
+			// #endif
+		},
+		methods: {
+			handleSavePhotos() {
+				// 调用系统方法实现图片保存
+				this.savePhotos = "正在保存";
+				let ws = this.$mp.page.$getAppWebview();
+				let bitmap = new plus.nativeObj.Bitmap();
+
+				this.$nextTick(() => {
+					setTimeout(() => {
+						// 画图
+						ws.draw(bitmap, (success) => {
+							bitmap.save("_doc/Qr.jpg", {
+								overwrite: true,
+								quality: 100
+							}, (success) => {
+								plus.gallery.save(success.target, (e) => {
+									uni.showToast({
+										title: "保存成功"
+									})
+									this.savePhotos = "保存到相册"
+									bitmap.clear(); // 销毁对象
+								})
+							})
+
+						}, (err) => {
+							console.log("保存图片失败")
+						}, (option) => {
+							console.log("bitmap绘制图片失败")
+						})
+					}, 200)
+				})
+
+			}
+		}
+	}
 </script>
 
 <style lang="scss">
