@@ -3,5 +3,5 @@
 
 **在线地址：[点这里预览](http://uniapp.raomaiping.xyz/ "线上地址")**
 
-**App下载地址：[点这里下载](http://49.234.4.61:8888/down/lnVkQrl694Yz/ "点击下载")**
+**App下载地址：[点这里下载](http://49.234.4.61:8888/down/lnVkQrl694Yz "点击下载")**
  
